@@ -1,0 +1,220 @@
+CREATE TABLE `employee` (
+  `id` int(10) NOT NULL,
+  `name` varchar(10) NOT NULL,
+  `salary` double NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `employee` (
+  `EMP_ID` int(11) NOT NULL,
+  `EMP_NAME` varchar(20) NOT NULL,
+  `EMP_EMAIL` varchar(30) NOT NULL,
+  `EMP_MOB_NO` bigint(20) NOT NULL,
+  `EMP_DPT_NAME` varchar(20) DEFAULT NULL,
+  `EMP_DATE_JOINED` date NOT NULL,
+  `EMP_MGR_ID` int(11) DEFAULT NULL,
+  `EMP_LEAVE_BALANCE` int(11) DEFAULT NULL,
+  PRIMARY KEY (`EMP_ID`),
+  KEY `EMP_MGR_ID` (`EMP_MGR_ID`),
+  CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`EMP_MGR_ID`) REFERENCES `employee` (`EMP_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `employlogin` (
+  `EMP_ID` int(11) DEFAULT NULL,
+  `SecretCode` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `leave_history` (
+  `LEA_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `LEA_START_DATE` date NOT NULL,
+  `LEA_END_DATE` date NOT NULL,
+  `LEA_NO_OF_DAYS` int(11) DEFAULT NULL,
+  `LEA_REASON` varchar(100) DEFAULT NULL,
+  `LEA_TYPE` enum('EL') DEFAULT NULL,
+  `LEA_APPLIED_ON` date DEFAULT NULL,
+  `LEA_MGR_COMMENTS` varchar(100) DEFAULT NULL,
+  `EMP_ID` int(11) DEFAULT NULL,
+  `LEA_STATUS` enum('APPROVED','DENIED','PENDING') DEFAULT NULL,
+  PRIMARY KEY (`LEA_ID`),
+  KEY `EMP_ID` (`EMP_ID`),
+  CONSTRAINT `leave_history_ibfk_1` FOREIGN KEY (`EMP_ID`) REFERENCES `employee` (`EMP_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `accounts` (
+  `AccountNo` int(11) NOT NULL,
+  `FirstName` varchar(30) DEFAULT NULL,
+  `LastName` varchar(30) DEFAULT NULL,
+  `City` varchar(30) DEFAULT NULL,
+  `State` varchar(30) DEFAULT NULL,
+  `Amount` int(11) DEFAULT NULL,
+  `CheqFacil` varchar(10) DEFAULT NULL,
+  `AccountType` varchar(20) DEFAULT NULL,
+  `Status` varchar(10) DEFAULT 'active',
+  `DateOfOpen` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`AccountNo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `trans` (
+  `AccountNo` int(11) DEFAULT NULL,
+  `TransAmount` decimal(9,2) DEFAULT NULL,
+  `TransDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `TransType` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `courselist` (
+  `courseno` varchar(15) NOT NULL,
+  `duration` int(11) DEFAULT NULL,
+  `startDate` date DEFAULT NULL,
+  `endDate` date DEFAULT NULL,
+  `HOD` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`courseno`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `feedback` (
+  `fid` varchar(15) NOT NULL,
+  `studentName` varchar(30) DEFAULT NULL,
+  `instructor` varchar(30) DEFAULT NULL,
+  `subject` varchar(30) DEFAULT NULL,
+  `fbvalue` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`fid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `subjects` (
+  `subId` int(11) NOT NULL AUTO_INCREMENT,
+  `year` int(11) DEFAULT NULL,
+  `instructor` varchar(28) DEFAULT NULL,
+  `subject` varchar(150) DEFAULT NULL,
+  `theory` int(11) DEFAULT NULL,
+  `practical` int(11) DEFAULT NULL,
+  PRIMARY KEY (`subId`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `emptable` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `address` varchar(45) NOT NULL,
+  `telephone` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+CREATE TABLE `account` (
+  `accountnum` int(15) NOT NULL,
+  `amount` double DEFAULT NULL,
+  `accounttype` char(11) DEFAULT NULL,
+  `userid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`accountnum`),
+  KEY `userid` (`userid`),
+  CONSTRAINT `account_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `hibernate_sequence` (
+  `next_val` bigint(20) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(11) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+CREATE TABLE `address` (
+  `emp_id` int(11) unsigned NOT NULL,
+  `address_line1` varchar(50) NOT NULL DEFAULT '',
+  `zipcode` varchar(10) DEFAULT NULL,
+  `city` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`emp_id`),
+  CONSTRAINT `emp_fk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `employee` (
+  `emp_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `emp_name` varchar(20) NOT NULL,
+  `emp_salary` double(10,0) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`emp_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+CREATE TABLE `billing` (
+  `BookID` varchar(10) DEFAULT NULL,
+  `RoomID` varchar(10) DEFAULT NULL,
+  `NoOfDays` int(11) DEFAULT NULL,
+  `BillAmt` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `booking` (
+  `BookId` varchar(10) NOT NULL,
+  `RoomID` varchar(10) DEFAULT NULL,
+  `CustName` varchar(30) DEFAULT NULL,
+  `City` varchar(30) DEFAULT NULL,
+  `BookDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `ChkDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`BookId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `room` (
+  `RoomID` varchar(10) NOT NULL,
+  `Type` varchar(10) DEFAULT NULL,
+  `Status` varchar(10) DEFAULT 'Available',
+  `CostPerDay` int(11) DEFAULT NULL,
+  PRIMARY KEY (`RoomID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `amount` (
+  `Gamt` decimal(9,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `orders` (
+  `OrderId` int(11) DEFAULT NULL,
+  `StockID` varchar(30) DEFAULT NULL,
+  `QtyOrd` int(11) DEFAULT NULL,
+  `billAmt` decimal(9,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `stock` (
+  `stockid` varchar(30) NOT NULL,
+  `ItemName` varchar(30) DEFAULT NULL,
+  `Price` decimal(9,2) DEFAULT NULL,
+  `QuantityAvail` int(11) DEFAULT NULL,
+  PRIMARY KEY (`stockid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `employee` (
+  `empNo` int(11) NOT NULL AUTO_INCREMENT,
+  `empName` varchar(45) NOT NULL,
+  `salary` float NOT NULL,
+  `band` varchar(45) NOT NULL,
+  `dateOfJoin` date NOT NULL,
+  PRIMARY KEY (`empNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+CREATE TABLE `books` (
+  `Id` int(11) NOT NULL,
+  `Name` varchar(50) DEFAULT NULL,
+  `Author` varchar(50) DEFAULT NULL,
+  `Edition` varchar(50) DEFAULT NULL,
+  `Dept` varchar(20) DEFAULT NULL,
+  `TotalBooks` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `libusers` (
+  `Username` varchar(50) NOT NULL,
+  `Password` varchar(50) NOT NULL,
+  PRIMARY KEY (`Username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `tranbook` (
+  `Username` varchar(50) DEFAULT NULL,
+  `BookId` int(11) DEFAULT NULL,
+  `Fromdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `transreturn` (
+  `Username` varchar(50) NOT NULL,
+  `BookId` int(11) NOT NULL,
+  `Fromdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Todate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `student` (
+  `rollNo` int(11) NOT NULL,
+  `sName` varchar(50) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `gender` varchar(20) DEFAULT NULL,
+  `country` varchar(20) DEFAULT NULL,
+  `doj` date DEFAULT NULL,
+  `finalScore` float DEFAULT NULL,
+  PRIMARY KEY (`rollNo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `employee` (
+  `EMP_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`EMP_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+CREATE TABLE `employee_address` (
+  `ADDR_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `EMP_ID` int(10) NOT NULL,
+  `STREET` varchar(255) DEFAULT NULL,
+  `CITY` varchar(255) DEFAULT NULL,
+  `STATE` varchar(255) DEFAULT NULL,
+  `COUNTRY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ADDR_ID`),
+  KEY `fk_emp` (`EMP_ID`),
+  CONSTRAINT `fk_emp` FOREIGN KEY (`EMP_ID`) REFERENCES `employee` (`EMP_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
